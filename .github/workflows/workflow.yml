@@ -31,3 +31,4 @@ jobs:
         echo "3"
         git commit *.pdf -m "pdf updated by GitHub Actions"
         git push -u master
+      shell: bash
