@@ -22,7 +22,7 @@ jobs:
         export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
         export PATH="/Library/TeX/texbin:$PATH"
         echo "1"
-        source .bash_profile
+        source ~/.bash_profile
         echo "2"
         sudo tlmgr update --self --all
         platex graduation-thesis.tex
