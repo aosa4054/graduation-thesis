@@ -19,7 +19,7 @@ jobs:
       id: cache
       with:
         path: /Library/TeX/texbin
-        key: ${{ runner.os }}-cache-${{ hashFiles(**/Library/TeX/texbin/**) }}
+        key: ${{ runner.os }}-cache-${{ hashFiles(format('{0}{1}', github.workspace, '/Library/TeX/texbin/tlmgr')) }}
         restore-keys: |
           ${{ runner.os }}-cache-
     - name: Setup TeX
