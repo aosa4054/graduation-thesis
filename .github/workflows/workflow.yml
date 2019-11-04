@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  Generate and push pdf:
+  Generate-and-push-pdf:
 
     runs-on: macOS-10.14
 
