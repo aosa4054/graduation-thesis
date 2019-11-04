@@ -25,9 +25,7 @@ jobs:
         sudo apt-get install texlive-fonts-extra
         sudo apt-get install xdvik-ja
         sudo apt-get install gv
-        tex_dir=`sudo dpkg -L texlive`
-        echo $tex_dir
-        eval `echo "sudo $tex_dir/texlive/tlmgr path add"`
+        sudo /usr/bin/tlmgr path add
     - name: Generate pdf
       run: |
         kanji-config-updmap-sys ipaex
