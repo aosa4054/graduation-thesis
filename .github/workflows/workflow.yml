@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+    - master
+  push:
+    branches: 
+      - master
+
+jobs:
+  Generate and push pdf:
+
+    runs-on: macOS-10.14
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup TeX
+      run: |
+        echo Add other actions to build,
+        echo test, and deploy your project.
+    - name: Setpu Pandoc
+      run: |
+    - name: Typeset and generate pdf
+      run: |
+    - name: Push
+      run: |
+        echo $GITHUB_REF
