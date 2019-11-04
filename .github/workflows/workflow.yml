@@ -18,9 +18,9 @@ jobs:
     - name: Setup TeX
       run: |
         brew cask install mactex-no-gui
-        ls
         echo "1"
-        sudo /Library/TeX/texbin/tlmgr update --self --all
+        sudo /Library/TeX/texbin/tlmgr update --self
+        sudo /Library/TeX/texbin/tlmgr update --all
         /Library/TeX/texbin/platex graduation-thesis.tex
         /Library/TeX/texbin.platex graduation-thesis.tex
         /Library/TeX/texbin.dvipdfmx graduation-thesis.tex
