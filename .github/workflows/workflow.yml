@@ -24,7 +24,6 @@ jobs:
         sudo apt-get install texlive-fonts-recommended
         sudo apt-get install texlive-fonts-extra
         sudo apt-get install xdvik-ja
-        sudo apt-get install dvipsk-ja
         sudo apt-get install gv
         ls usr/local/texlive
         sudo /usr/local/texlive/2018/bin/x86_64-linux/tlmgr path add
