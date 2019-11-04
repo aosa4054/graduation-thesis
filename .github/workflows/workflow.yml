@@ -15,11 +15,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Cache Tex
-      uses: actions/cache@preview
+    - uses: actions/cache@preview
+      id: cache
       with:
-        path: ~/Library/TeX/texbin
-        key: ${{ runner.os }}-tex-${{ hashFiles('**/Library/TeX/texbin/**') }}
+        path: /Library/TeX/texbin
+        key: ${{ runner.os }}-tex-${{ hashFiles('/Library/TeX/texbin/**') }}
         restore-keys:
           ${{ runner.os }}-tex-
     - name: Setup TeX
@@ -28,9 +28,14 @@ jobs:
         brew cask install mactex-no-gui
         sudo /Library/TeX/texbin/tlmgr update --self
         sudo /Library/TeX/texbin/tlmgr update --all
+    - name: Generate pdf
+      if: always()
+      run: |
         /Library/TeX/texbin/platex graduation-thesis.tex
         /Library/TeX/texbin/platex graduation-thesis.tex
         /Library/TeX/texbin/dvipdfmx graduation-thesis.dvi
+    - name: Push
+      if: $(git status --porcelain | grep .pdf$ | wc -l) -ne 0
+      run: |
         git commit *.pdf -m "pdf updated by GitHub Actions"
         git push -u master
-        
