@@ -15,10 +15,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    - uses: actions/cache@preview
+      id: cache
+      with:
+        path: /Library/TeX/texbin
+        key: ${{ runner.os }}-cache-${{ hashFiles(**/Library/TeX/texbin/**) }}
+        restore-keys: |
+          ${{ runner.os }}-cache-
     - name: Setup TeX
+      if: steps.cache.outputs.cache-hit != 'true'
       run: |
         brew cask install mactex-no-gui
     - name: Update tlmgr
+      if: steps.cache.outputs.cache-hit != 'true'
       run: |
         sudo /Library/TeX/texbin/tlmgr update --self --all 
     - name: Generate pdf
@@ -31,6 +40,7 @@ jobs:
       if: always()
       run: |
         if [ $(git status --porcelain | grep .pdf$ | wc -l) -ne 0 ] ; then
+          git config --local user.email "shoara0509@gmail.com"
           git commit *.pdf -m "pdf updated by GitHub Actions"
           git push origin HEAD:master
         fi
