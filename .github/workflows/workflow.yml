@@ -27,7 +27,6 @@ jobs:
         sudo apt-get install gv
         tex_dir=`sudo dpkg -L texlive-lang-japanese`
         echo $tex_dir
-        ls $tex_dir
         eval `echo "sudo $tex_dir/texlive-lang-japanese/tlmgr path add"`
     - name: Generate pdf
       run: |
