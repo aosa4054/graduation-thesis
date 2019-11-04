@@ -18,6 +18,7 @@ jobs:
     - name: Setup TeX
       run: |
         brew cask install mactex-no-gui
+        exec $SHELL -l
         sudo tlmgr update --self --all
     - name: Setpu Pandoc
       run: |
