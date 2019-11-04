@@ -11,34 +11,30 @@ on:
 jobs:
   Generate-and-push-pdf:
 
-    runs-on: macOS-10.14
+    runs-on: ubuntu-18.04
 
     steps:
     - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1.1.0
-    - uses: actions/cache@preview
-      id: cache
-      with:
-        path: /Library/TeX/texbin
-        key: ${{ runner.os }}-cache-${{ hashFiles(format('{0}{1}', github.workspace, '/README.md')) }}
-        restore-keys: |
-          ${{ runner.os }}-cache-
     - name: Setup TeX
-      if: steps.cache.outputs.cache-hit != 'true'
       run: |
-        brew cask install mactex-no-gui
-    - name: Update tlmgr
-      if: steps.cache.outputs.cache-hit != 'true'
-      run: |
-        sudo /Library/TeX/texbin/tlmgr update --self --all 
+        sudo apt-get install texlive-lang-japanese
+        sudo apt-get update
+        sudo apt-get upgrade
+        sudo apt-get install texlive-lang-cjk
+        sudo apt-get install texlive-fonts-recommended
+        sudo apt-get install texlive-fonts-extra
+        sudo apt-get install xdvik-ja
+        sudo apt-get install dvipsk-ja
+        sudo apt-get install gv
+        ls usr/local/texlive
+        sudo /usr/local/texlive/2018/bin/x86_64-linux/tlmgr path add
     - name: Generate pdf
-      if: always()
       run: |
-        /Library/TeX/texbin/platex graduation-thesis.tex
-        /Library/TeX/texbin/platex graduation-thesis.tex
-        /Library/TeX/texbin/dvipdfmx graduation-thesis.dvi
+        kanji-config-updmap-sys ipaex
+        uplatex graduation-thesis.tex
+        uplatex graduation-thesis.tex
+        dvipdfmx graduation-thesis.dvi
     - name: Push
-      if: always()
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
