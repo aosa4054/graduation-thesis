@@ -15,16 +15,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Reset branch
-      run: |
-        branch_name=`echo "${GITHUB_REF}" | sed -e "s/refs\/heads\///"`
-        git reset --hard origin/$branch_name
     - name: Setup TeX
       run: |
         brew cask install mactex-no-gui
     - name: Update tlmgr
       run: |
-        /Library/TeX/texbin/tlmgr update --self --all 
+        sudo /Library/TeX/texbin/tlmgr update --self --all 
     - name: Generate pdf
       if: always()
       run: |
@@ -36,5 +32,5 @@ jobs:
       run: |
         if [ $(git status --porcelain | grep .pdf$ | wc -l) -ne 0 ] ; then
           git commit *.pdf -m "pdf updated by GitHub Actions"
-          git push -u master
+          git push origin HEAD:master
         fi
