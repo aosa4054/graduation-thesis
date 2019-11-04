@@ -18,8 +18,6 @@ jobs:
     - name: Setup TeX
       run: |
         brew cask install mactex-no-gui
-        sudo /Library/TeX/texbin/tlmgr update --self
-        sudo /Library/TeX/texbin/tlmgr update --all
     - name: Generate pdf
       run: |
         /Library/TeX/texbin/platex graduation-thesis.tex
