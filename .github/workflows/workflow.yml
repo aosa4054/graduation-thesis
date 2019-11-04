@@ -21,10 +21,13 @@ jobs:
         touch ~/.bash_profile
         export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
         export PATH="/Library/TeX/texbin:$PATH"
-        exec $SHELL -l
+        echo "1"
+        exec bash -l
+        echo "2"
         sudo tlmgr update --self --all
         platex graduation-thesis.tex
         platex graduation-thesis.tex
         dvipdfmx graduation-thesis.tex
+        echo "3"
         git commit *.pdf -m "pdf updated by GitHub Actions"
         git push -u master
