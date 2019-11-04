@@ -18,6 +18,8 @@ jobs:
     - name: Setup TeX
       run: |
         brew cask install mactex-no-gui
+        touch ~/.bash_profile
+        export PATH=$PATH:/usr/local/texlive/2014/bin/x86_64-darwin/
         exec $SHELL -l
         sudo tlmgr update --self --all
     - name: Setpu Pandoc
