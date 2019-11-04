@@ -19,7 +19,7 @@ jobs:
       uses: actions/cache@preview
       with:
         path: ~/Library/TeX/texbin
-        key: ${{ runner.os }}-tex-${{ hashFiles('**/Library/TeX/texbin/**')) }}
+        key: ${{ runner.os }}-tex-${{ hashFiles('**/Library/TeX/texbin/**') }}
         restore-keys:
           ${{ runner.os }}-tex-
     - name: Setup TeX
