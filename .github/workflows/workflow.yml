@@ -17,12 +17,16 @@ jobs:
     - uses: actions/checkout@v1
     - name: Setup TeX
       run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+        brew cask install mactex-no-gui
+        sudo tlmgr update --self --all
     - name: Setpu Pandoc
       run: |
     - name: Typeset and generate pdf
       run: |
+        platex graduation-thesis.tex
+        platex graduation-thesis.tex
     - name: Push
       run: |
         echo $GITHUB_REF
+        git commit *.pdf -m "pdf updated by GitHub Actions"
+        git push -u master
