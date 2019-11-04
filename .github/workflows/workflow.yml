@@ -23,12 +23,9 @@ jobs:
         export PATH="/Library/TeX/texbin:$PATH"
         exec $SHELL -l
         sudo tlmgr update --self --all
-    - name: Setpu Pandoc
-      run: |
-    - name: Typeset and generate pdf
-      run: |
         platex graduation-thesis.tex
         platex graduation-thesis.tex
+        dvipdfmx graduation-thesis.tex
     - name: Push
       run: |
         echo $GITHUB_REF
