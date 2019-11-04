@@ -27,8 +27,8 @@ jobs:
         sudo apt-get install gv
     - name: Generate pdf
       run: |
-        /usr/bin/uplatex graduation-thesis.tex
-        /usr/bin/uplatex graduation-thesis.tex
+        /usr/bin/platex graduation-thesis.tex
+        /usr/bin/platex graduation-thesis.tex
         /usr/bin/dvipdfmx graduation-thesis.dvi
     - name: Push
       uses: appleboy/ssh-action@master
