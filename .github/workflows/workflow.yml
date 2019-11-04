@@ -26,8 +26,5 @@ jobs:
         platex graduation-thesis.tex
         platex graduation-thesis.tex
         dvipdfmx graduation-thesis.tex
-    - name: Push
-      run: |
-        echo $GITHUB_REF
         git commit *.pdf -m "pdf updated by GitHub Actions"
         git push -u master
