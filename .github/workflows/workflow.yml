@@ -35,7 +35,9 @@ jobs:
         /Library/TeX/texbin/platex graduation-thesis.tex
         /Library/TeX/texbin/dvipdfmx graduation-thesis.dvi
     - name: Push
-      if: $(git status --porcelain | grep .pdf$ | wc -l) -ne 0
+      if: always()
       run: |
-        git commit *.pdf -m "pdf updated by GitHub Actions"
-        git push -u master
+        if [ $(git status --porcelain | grep .pdf$ | wc -l) -ne 0 ] ; then
+          git commit *.pdf -m "pdf updated by GitHub Actions"
+          git push -u master
+        fi
