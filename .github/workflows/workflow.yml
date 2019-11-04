@@ -33,7 +33,8 @@ jobs:
     - name: Commit pdf file
       run: |
         if [ $(git status --porcelain | grep .pdf$ | wc -l) -ne 0 ] ; then
-          git config --local user.email shoara0509@gmail.com
+          git config user.email shoara0509@gmail.com
+          git config user.name showtara
           git commit *.pdf -m "pdf updated by GitHub Actions"
         fi
     - name: Push changes
