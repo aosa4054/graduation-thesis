@@ -1,4 +1,4 @@
-name: CI
+name: Auto-generate-and-push-pdf
 
 on:
   pull_request:
@@ -30,16 +30,13 @@ jobs:
         /usr/bin/platex graduation-thesis.tex
         /usr/bin/platex graduation-thesis.tex
         /usr/bin/dvipdfmx graduation-thesis.dvi
-    - name: Push
-      uses: appleboy/ssh-action@master
+    - name: Commit pdf file
+      run: |
+        if [ $(git status --porcelain | grep .pdf$ | wc -l) -ne 0 ] ; then
+          git remote set-url origin git@github.com:aosa4054/graduation-thesis.git
+          git commit *.pdf -m "pdf updated by GitHub Actions"
+        fi
+    - name: Push changes
+      uses: ad-m/github-push-action@master
       with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.KEY }}
-        port: ${{ secrets.PORT }}
-        script: |
-          if [ $(git status --porcelain | grep .pdf$ | wc -l) -ne 0 ] ; then
-            git remote set-url origin git@github.com:aosa4054/graduation-thesis.git
-            git commit *.pdf -m "pdf updated by GitHub Actions"
-            git push origin HEAD:master
-          fi
+        github_token: ${{ secrets.GITHUB_TOKEN }}
