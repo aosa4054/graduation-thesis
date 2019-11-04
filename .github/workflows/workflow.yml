@@ -25,13 +25,11 @@ jobs:
         sudo apt-get install texlive-fonts-extra
         sudo apt-get install xdvik-ja
         sudo apt-get install gv
-        sudo /usr/bin/tlmgr path add
     - name: Generate pdf
       run: |
-        kanji-config-updmap-sys ipaex
-        uplatex graduation-thesis.tex
-        uplatex graduation-thesis.tex
-        dvipdfmx graduation-thesis.dvi
+        /usr/bin/uplatex graduation-thesis.tex
+        /usr/bin/uplatex graduation-thesis.tex
+        /usr/bin/dvipdfmx graduation-thesis.dvi
     - name: Push
       uses: appleboy/ssh-action@master
       with:
