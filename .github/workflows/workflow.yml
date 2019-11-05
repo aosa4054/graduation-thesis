@@ -23,21 +23,20 @@ jobs:
         sudo apt-get install texlive-lang-cjk
         sudo apt-get install texlive-fonts-recommended
         sudo apt-get install texlive-fonts-extra
-        sudo apt-get install xdvik-ja
         sudo apt-get install gv
     - name: Generate pdf
       run: |
         /usr/bin/platex graduation-thesis.tex
         /usr/bin/platex graduation-thesis.tex
         /usr/bin/dvipdfmx graduation-thesis.dvi
-    - name: Commit pdf file
+    - name: Push pdf file
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         if [ $(git status --porcelain | grep .pdf$ | wc -l) -ne 0 ] ; then
+          git remote set-url origin https://aosa4054:${GITHUB_TOKEN}@github.com/aosa4054/graduation-thesis.git
           git config user.email shoara0509@gmail.com
           git config user.name showtara
           git commit *.pdf -m "pdf updated by GitHub Actions"
+          git push origin HEAD:master
         fi
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
