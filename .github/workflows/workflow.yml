@@ -15,6 +15,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    - name: Setup Pandoc
+      run: |
+        sudo apt-get install pandoc
     - name: Setup TeX
       run: |
         sudo apt-get install texlive-lang-japanese
@@ -24,7 +27,17 @@ jobs:
         sudo apt-get install texlive-fonts-recommended
         sudo apt-get install texlive-fonts-extra
         sudo apt-get install gv
+    - name: Md to TeX
+      run: |
+        ls | grep .md$ | awk '{print "\""$1"\""}' | awk '{system("eval `echo /usr/bin/pandoc "$1" -o `echo "$1" | sed -e 's/md$/tex/'``")}'
+    - name: Merge TeX files
+      run: |
+        document_end_line=`grep -n end{document} graduation-thesis.tex | cut -f 1 -d ":"`
+        eval `echo "sed -i -e '$document_end_line""d'" "graduation-thesis.tex" `
+        ls | grep .tex$ | sed -e 's/graduation-thesis.tex$//' | sed  '/^$/d' | awk '{system("echo \\\\input {"$1"} >> graduation-thesis.tex ")}'
+        echo "\end{document}" >> graduation-thesis.tex
     - name: Generate pdf
+      if: always()
       run: |
         /usr/bin/platex graduation-thesis.tex
         /usr/bin/platex graduation-thesis.tex
@@ -32,11 +45,19 @@ jobs:
     - name: Push pdf file
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      if: always()
       run: |
+        git remote set-url origin https://aosa4054:${GITHUB_TOKEN}@github.com/aosa4054/graduation-thesis.git
+        git config user.email shoara0509@gmail.com
+        git config user.name showtara
+        if [ $(git status --porcelain | grep .tex$ | wc -l) -ne 0 ] ; then
+          git commit *.tex -m "tex file updated by GitHub Actions"
+          git push origin HEAD:master
+        fi
         if [ $(git status --porcelain | grep .pdf$ | wc -l) -ne 0 ] ; then
-          git remote set-url origin https://aosa4054:${GITHUB_TOKEN}@github.com/aosa4054/graduation-thesis.git
-          git config user.email shoara0509@gmail.com
-          git config user.name showtara
           git commit *.pdf -m "pdf updated by GitHub Actions"
+          git push origin HEAD:master
+        fi
+        if [ $(git status --porcelain | grep -e .tex$ -e .pdf$ | wc -l) -ne 0 ] ; then
           git push origin HEAD:master
         fi
