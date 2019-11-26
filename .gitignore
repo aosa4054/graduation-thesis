@@ -6,3 +6,5 @@
 *.blg
 *.dvi
 /references/pdf/*
+*.fdb_latexmk
+*.fls
