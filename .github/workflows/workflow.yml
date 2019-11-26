@@ -43,10 +43,9 @@ jobs:
         git config user.name showtara
         if [ $(git status --porcelain | grep .bib$ | wc -l) -ne 0 ] ; then
           git commit *.bib -m "references updated by GitHub Actions"
+          git push origin HEAD:master
         fi
         if [ $(git status --porcelain | grep .pdf$ | wc -l) -ne 0 ] ; then
           git commit *.pdf -m "pdf updated by GitHub Actions"
-        fi
-        if [ $(git status --porcelain | grep -e .pdf$ -e .bib$ | wc -l) -ne 0 ] ; then
           git push origin HEAD:master
         fi
