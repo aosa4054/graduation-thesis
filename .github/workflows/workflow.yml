@@ -24,8 +24,13 @@ jobs:
         sudo apt-get install texlive-fonts-recommended
         sudo apt-get install texlive-fonts-extra
         sudo apt-get install gv
+    - name: Merge bib files
+      run: |
+        for bib in $(ls references | grep .bib$);do path="references/$bib";key=`cat $path | grep "^author =" | cut -f 2 -d "=" | sed -e "s/^ \"//" -e "s/\"\,$//" -e "s/\,//g" | cut -f 1 -d " "`;cat $path | sed -e "/^abstract/d" -e "s/{.*\,/{$key,/"; done | awk '{print}{system("")}' > references.bib
     - name: Generate pdf
       run: |
+        /usr/bin/platex graduation-thesis.tex
+        /usr/bin/pbibtex graduation-thesis
         /usr/bin/platex graduation-thesis.tex
         /usr/bin/platex graduation-thesis.tex
         /usr/bin/dvipdfmx graduation-thesis.dvi
@@ -38,6 +43,7 @@ jobs:
         git config user.name showtara
         if [ $(git status --porcelain | grep -e .tex$ -e .bib$ | wc -l) -ne 0 ] ; then
           git commit *.tex -m "tex file updated by GitHub Actions"
+          git commit *.bib -m "references updated by GitHub Actions"
           git push origin HEAD:master
         fi
         if [ $(git status --porcelain | grep .pdf$ | wc -l) -ne 0 ] ; then
