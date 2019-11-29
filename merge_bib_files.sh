@@ -1,0 +1,1 @@
+for bib in $(ls references | grep .bib$);do path="references/$bib";key=`echo $bib | sed 's/\.bib//'`;cat $path | sed -e "/^abstract/d" -e "s/^\(@.*\){.*\,/\1{$key,/"; done | awk '{print}{system("")}' > references.bib
