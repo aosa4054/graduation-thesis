@@ -26,7 +26,7 @@ jobs:
         sudo apt-get install gv
     - name: Merge bib files
       run: |
-        for bib in $(ls references | grep .bib$);do path="references/$bib";author=`cat $path | grep "^author =" | cut -f 2 -d "=" | sed -e "s/^ \"//" -e "s/\"\,$//" -e "s/\,//g" | cut -f 1 -d " "`;year=`cat $path| grep "^year =" | cut -c 9-12`;key=$author-$year;cat $path | sed -e "/^abstract/d" -e "s/^\(@.*\){.*\,/\1{$key,/"; done | awk '{print}{system("")}' > references.bib
+        for bib in $(ls references | grep .bib$);do path="references/$bib";key=`echo $bib | sed 's/\.bib//'`;cat $path | sed -e "/^abstract/d" -e "s/^\(@.*\){.*\,/\1{$key,/"; done | awk '{print}{system("")}' > references.bib
     - name: Generate pdf
       run: |
         /usr/bin/platex graduation-thesis.tex
