@@ -48,6 +48,7 @@ jobs:
         /usr/bin/dvipdfmx graduation-thesis.dvi
     - name: Push pdf file
       run: |
+        git add -A *.pdf
         if [ $(git status --porcelain | grep .pdf$ | wc -l) -ne 0 ] ; then
           git commit *.pdf -m "pdf updated by GitHub Actions"
           git push origin HEAD:master
