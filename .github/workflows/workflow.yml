@@ -16,13 +16,13 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Setup git
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git remote set-url origin https://aosa4054:${GITHUB_TOKEN}@github.com/aosa4054/graduation-thesis.git
         git config user.email shoara0509@gmail.com
         git config user.name showtara
     - name: Merge bib files
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         sh merge_bib_files.sh
         if [ $(git status --porcelain | grep .bib$ | wc -l) -ne 0 ] ; then
@@ -47,8 +47,6 @@ jobs:
         /usr/bin/platex graduation-thesis.tex
         /usr/bin/dvipdfmx graduation-thesis.dvi
     - name: Push pdf file
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         if [ $(git status --porcelain | grep .pdf$ | wc -l) -ne 0 ] ; then
           git commit *.pdf -m "pdf updated by GitHub Actions"
