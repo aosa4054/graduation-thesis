@@ -15,6 +15,20 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    - name: Setup git
+      run: |
+        git remote set-url origin https://aosa4054:${GITHUB_TOKEN}@github.com/aosa4054/graduation-thesis.git
+        git config user.email shoara0509@gmail.com
+        git config user.name showtara
+    - name: Merge bib files
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        sh merge_bib_files.sh
+        if [ $(git status --porcelain | grep .bib$ | wc -l) -ne 0 ] ; then
+          git commit *.bib -m "references updated by GitHub Actions"
+          git push origin HEAD:master
+        fi
     - name: Setup TeX
       run: |
         sudo apt-get update
@@ -25,9 +39,6 @@ jobs:
         sudo apt-get install texlive-fonts-recommended
         sudo apt-get install texlive-fonts-extra
         sudo apt-get install gv
-    - name: Merge bib files
-      run: |
-        sh merge_bib_files.sh
     - name: Generate pdf
       run: |
         /usr/bin/platex graduation-thesis.tex
@@ -39,13 +50,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        git remote set-url origin https://aosa4054:${GITHUB_TOKEN}@github.com/aosa4054/graduation-thesis.git
-        git config user.email shoara0509@gmail.com
-        git config user.name showtara
-        if [ $(git status --porcelain | grep .bib$ | wc -l) -ne 0 ] ; then
-          git commit *.bib -m "references updated by GitHub Actions"
-          git push origin HEAD:master
-        fi
         if [ $(git status --porcelain | grep .pdf$ | wc -l) -ne 0 ] ; then
           git commit *.pdf -m "pdf updated by GitHub Actions"
           git push origin HEAD:master
