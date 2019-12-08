@@ -8,3 +8,4 @@
 /references/pdf/*
 *.fdb_latexmk
 *.fls
+*.docx
